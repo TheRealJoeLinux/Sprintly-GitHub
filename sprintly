@@ -167,12 +167,11 @@ class SprintlyTool:
         print('Downloading latest version of sprintly from GitHub...')
 
         # get the file
-        # try:
-        #     response = urlopen(SPRINTLY_SOURCE_URL)
-        #     sprintly_file_contents = response.read()
-        # except Exception:
-        #     raise SprintlyException('Unable to obtain commit-msg from %s' % SPRINTLY_SOURCE_URL)
-        sprintly_file_contents = open(__file__, 'r').read()
+        try:
+            response = urlopen(SPRINTLY_SOURCE_URL)
+            sprintly_file_contents = response.read()
+        except Exception:
+            raise SprintlyException('Unable to obtain commit-msg from %s' % SPRINTLY_SOURCE_URL)
 
         # verify nothing exists at the target path
         target = SPRINTLY_PATH
