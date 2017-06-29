@@ -4,6 +4,7 @@ import sys
 import re
 import os
 import subprocess
+from builtins import input
 
 
 def process(commit_msg_path):
@@ -32,7 +33,7 @@ def process(commit_msg_path):
 
         # check if they opted out
         if '0' in items:
-            print 'Proceeding without Sprint.ly item number.'
+            print('Proceeding without Sprint.ly item number.')
             return
 
         # convert items into string
@@ -87,9 +88,9 @@ def display_sprintly_items():
     try:
         subprocess.call(['sprintly'], stdin=open('/dev/tty', 'r'))
     except:
-        print 'Command-line tool \'sprintly\' not found. Please ensure it is installed and on your path.'
+        print('Command-line tool \'sprintly\' not found. Please ensure it is installed and on your path.')
 
-    print '#0 - Proceed without Sprint.ly item number.'
+    print('#0 - Proceed without Sprint.ly item number.')
 
 
 def get_sprintly_items():
@@ -104,7 +105,7 @@ def get_sprintly_items():
     sys.stdin = open('/dev/tty', 'r')
 
     while True:
-        sprintly_items = raw_input('Enter 1 or more item numbers separated by a space: ').split(' ')
+        sprintly_items = input('Enter 1 or more item numbers separated by a space: ').split(' ')
         result = map(lambda x: parse_item_number(x), sprintly_items)
         if not None in result:
             return result
@@ -129,10 +130,10 @@ if __name__ == '__main__':
             # Should never happen, but just in case...
             raise Exception('Commit message was not received.')
     except KeyboardInterrupt:
-        print '\n\nProgram interrupted. Commit aborted.'
+        print('\n\nProgram interrupted. Commit aborted.')
         sys.exit(1)
     except Exception as e:
-        print '\n\nError occurred. Commit aborted.'
+        print('\n\nError occurred. Commit aborted.')
         sys.exit(1)
 
     # Execute the original commit hook. Note: We don't want realpath because
@@ -140,6 +141,6 @@ if __name__ == '__main__':
     # .git/hooks/commit-msg and we want to be in the hooks directory.
     original_commit_msg = os.path.dirname(__file__) + '/commit-msg.original'
     if os.path.exists(original_commit_msg):
-      sys.exit(subprocess.call([original_commit_msg, sys.argv[1]]))
+        sys.exit(subprocess.call([original_commit_msg, sys.argv[1]]))
     else:
-      sys.exit(0)
+        sys.exit(0)
